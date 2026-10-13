@@ -1,0 +1,386 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BookHaven | Online Book Store</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --green: #244b3c;
+  --cream: #f8f6f0;
+  --orange: #d58a52;
+  --ink: #242c28;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: #fff;
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+}
+.navbar { background: white; }
+.brand {
+  color: var(--green);
+  font: 700 27px 'Playfair Display', serif;
+}
+.brand span { color: var(--orange); }
+.nav-link { color: #343c37; font-weight: 500; }
+.nav-link:hover { color: var(--orange); }
+.hero {
+  background: var(--cream);
+  padding: 65px 0;
+  overflow: hidden;
+}
+.hero h1 {
+  font: 700 clamp(38px, 5vw, 62px) 'Playfair Display', serif;
+  line-height: 1.13;
+}
+.hero h1 span { color: var(--green); }
+.hero p { color: #68716b; line-height: 1.8; }
+.btn-green {
+  background: var(--green);
+  color: white;
+  border-radius: 5px;
+  padding: 12px 22px;
+}
+.btn-green:hover { background: #18372b; color: white; }
+.hero-art {
+  min-height: 290px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+.book-cover {
+  width: 145px;
+  height: 210px;
+  border-radius: 4px 10px 10px 4px;
+  box-shadow: 8px 12px 20px #0002;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 15px;
+  color: white;
+  font: 600 23px 'Playfair Display', serif;
+}
+.cover-one { background: #355b48; transform: rotate(-8deg); }
+.cover-two { background: #c37e4a; height: 235px; }
+.cover-three { background: #777d9d; transform: rotate(8deg); }
+.section-title {
+  font: 700 34px 'Playfair Display', serif;
+}
+.muted { color: #747c76; }
+.category {
+  background: var(--cream);
+  border: 1px solid #eae8df;
+  border-radius: 8px;
+  padding: 16px 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: .2s;
+}
+.category:hover, .category.active {
+  background: var(--green);
+  color: white;
+}
+.book-card {
+  border: 1px solid #eeeee9;
+  border-radius: 10px;
+  padding: 12px;
+  height: 100%;
+  transition: .2s;
+}
+.book-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px #0000000c;
+}
+.book-art {
+  height: 205px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 7px;
+  margin-bottom: 13px;
+}
+.book-art span {
+  width: 118px;
+  height: 166px;
+  box-shadow: 5px 7px 12px #0002;
+  border-radius: 3px 7px 7px 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 12px;
+  color: white;
+  font: 600 20px 'Playfair Display', serif;
+}
+.book-title { font-weight: 700; font-size: 16px; }
+.book-author { font-size: 13px; color: #818780; }
+.price { color: var(--green); font-weight: 700; }
+.small-btn {
+  border: 1px solid var(--green);
+  color: var(--green);
+  background: white;
+  border-radius: 5px;
+  padding: 7px 10px;
+  font-size: 13px;
+}
+.small-btn:hover { background: var(--green); color: white; }
+.newsletter {
+  background: var(--green);
+  color: white;
+  border-radius: 12px;
+  padding: 38px;
+}
+footer { background: #f8f6f0; }
+footer a { color: inherit; text-decoration: none; }
+@media (max-width: 576px) {
+  .hero { padding: 40px 0; }
+  .hero-art { min-height: 220px; }
+  .book-cover { width: 100px; height: 155px; font-size: 17px; }
+  .cover-two { height: 180px; }
+  .book-art { height: 165px; }
+  .book-art span { width: 100px; height: 135px; font-size: 17px; }
+  .section-title { font-size: 28px; }
+  .newsletter { padding: 25px 18px; }
+}
+</style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg sticky-top shadow-sm">
+  <div class="container py-2">
+    <a class="navbar-brand brand" href="#">Book<span>Haven.</span></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+      data-bs-target="#mainNav" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-3">
+        <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="#categories">Categories</a></li>
+        <li class="nav-item"><a class="nav-link" href="#books">Books</a></li>
+        <li class="nav-item"><a class="nav-link" href="#newsletter">Newsletter</a></li>
+        <li class="nav-item"><a class="nav-link" href="#cart">🛒 Cart (<span id="cartCount">0</span>)</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<section class="hero" id="home">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6">
+        <p class="text-uppercase fw-bold small" style="color:#c27e4a;letter-spacing:3px">
+          YOUR NEXT CHAPTER STARTS HERE
+        </p>
+        <h1>Find your next <span>favourite</span> book.</h1>
+        <p class="my-4">Explore wonderful stories, discover new ideas, and find books that inspire your world.</p>
+        <a href="#books" class="btn btn-green">Explore Books →</a>
+      </div>
+      <div class="col-lg-6">
+        <div class="hero-art">
+          <div class="book-cover cover-one">The Art<br>of Living</div>
+          <div class="book-cover cover-two">Stories<br>That Stay</div>
+          <div class="book-cover cover-three">Beyond<br>the Sky</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container py-5" id="categories">
+  <div class="mb-4">
+    <h2 class="section-title">Browse Categories</h2>
+    <p class="muted">Find something you'll love to read.</p>
+  </div>
+  <div class="row g-3">
+    <div class="col-6 col-md-3"><div class="category active" data-category="All">📚 All Books</div></div>
+    <div class="col-6 col-md-3"><div class="category" data-category="Fiction">✨ Fiction</div></div>
+    <div class="col-6 col-md-3"><div class="category" data-category="Education">🎓 Education</div></div>
+    <div class="col-6 col-md-3"><div class="category" data-category="Technology">💻 Technology</div></div>
+  </div>
+</section>
+
+<section class="container pb-5" id="books">
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <div>
+      <h2 class="section-title mb-1">Discover Books</h2>
+      <p class="muted mb-0">Stories and knowledge for every reader.</p>
+    </div>
+    <input id="searchBox" class="form-control" style="max-width:280px"
+      placeholder="Search books or authors..." aria-label="Search books">
+  </div>
+  <div class="row g-4" id="bookList"></div>
+  <p id="noResults" class="text-center muted py-4" hidden>No books found. Try another search.</p>
+</section>
+
+<section class="container pb-5" id="cart">
+  <div class="p-4 rounded-3" style="background:#f8f6f0">
+    <h2 class="section-title">Your Cart</h2>
+    <div id="cartItems" class="my-3">Your cart is empty.</div>
+    <div class="fw-bold mb-3" id="cartTotal">Total: ₹0</div>
+    <button class="btn btn-green" onclick="checkout()">Proceed to Checkout</button>
+    <p class="small muted mt-2 mb-0">Demo checkout only; no real payment is collected.</p>
+  </div>
+</section>
+
+<section class="container pb-5" id="newsletter">
+  <div class="newsletter text-center">
+    <h2 class="section-title">A little book love in your inbox.</h2>
+    <p class="my-3">Subscribe for reading recommendations and new arrivals.</p>
+    <form id="newsletterForm" class="d-flex flex-column flex-sm-row gap-2 mx-auto"
+      style="max-width:480px">
+      <input class="form-control" type="email" id="emailInput"
+        placeholder="Enter your email address" required>
+      <button class="btn btn-light text-dark fw-bold" type="submit">Subscribe</button>
+    </form>
+    <p id="newsletterMessage" class="small mt-3 mb-0"></p>
+  </div>
+</section>
+
+<footer class="py-4">
+  <div class="container d-flex flex-wrap justify-content-between gap-2">
+    <span class="brand">Book<span>Haven.</span></span>
+    <span class="muted small">A good book opens a new world.</span>
+    <span class="muted small">© 2026 BookHaven</span>
+  </div>
+</footer>
+
+<!-- Book Details Modal -->
+<div class="modal fade" id="bookModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Book Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="bookDetails"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const books = [
+  {id:1,title:"The Silent Garden",author:"A. Morgan",category:"Fiction",price:299,color:"#426957",description:"A moving story about family, hope and the unexpected paths that lead us home."},
+  {id:2,title:"Learning Every Day",author:"R. Sharma",category:"Education",price:349,color:"#bd8050",description:"A practical guide to building better learning habits and lifelong curiosity."},
+  {id:3,title:"Future of AI",author:"K. Williams",category:"Technology",price:499,color:"#626c91",description:"An introduction to artificial intelligence, machine learning and emerging technology."},
+  {id:4,title:"Midnight Stories",author:"J. Parker",category:"Fiction",price:279,color:"#754e62",description:"A collection of intriguing short stories filled with mystery and imagination."},
+  {id:5,title:"Python Made Simple",author:"S. Kumar",category:"Technology",price:399,color:"#397b83",description:"Learn programming concepts through clear explanations and beginner-friendly examples."},
+  {id:6,title:"The Power of Focus",author:"M. Davis",category:"Education",price:325,color:"#987b42",description:"Explore simple strategies for improving focus, planning and personal productivity."},
+  {id:7,title:"Ocean of Dreams",author:"L. James",category:"Fiction",price:259,color:"#39718a",description:"An adventurous tale of courage, friendship and discovery across the sea."},
+  {id:8,title:"Data Science Basics",author:"P. Raj",category:"Technology",price:449,color:"#685b9b",description:"Discover data analysis, visualization and core data science concepts."}
+];
+
+let selectedCategory = "All";
+let cart = [];
+
+function renderBooks() {
+  const query = document.getElementById("searchBox").value.toLowerCase();
+  const filtered = books.filter(b =>
+    (selectedCategory === "All" || b.category === selectedCategory) &&
+    (b.title.toLowerCase().includes(query) ||
+     b.author.toLowerCase().includes(query))
+  );
+
+  document.getElementById("noResults").hidden = filtered.length > 0;
+  document.getElementById("bookList").innerHTML = filtered.map(b => `
+    <div class="col-6 col-md-4 col-lg-3">
+      <article class="book-card">
+        <div class="book-art" style="background:${b.color}18">
+          <span style="background:${b.color}">${b.title}</span>
+        </div>
+        <div class="book-title">${b.title}</div>
+        <div class="book-author mb-2">${b.author} · ${b.category}</div>
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+          <span class="price">₹${b.price}</span>
+          <button class="small-btn" onclick="showDetails(${b.id})">View Details</button>
+        </div>
+        <button class="btn btn-green btn-sm w-100 mt-3" onclick="addToCart(${b.id})">
+          Add to Cart
+        </button>
+      </article>
+    </div>
+  `).join("");
+}
+
+function showDetails(id) {
+  const b = books.find(book => book.id === id);
+  document.getElementById("bookDetails").innerHTML = `
+    <div class="p-4 text-center rounded mb-3" style="background:${b.color}18">
+      <div class="book-cover mx-auto" style="background:${b.color};transform:none">${b.title}</div>
+    </div>
+    <h4>${b.title}</h4>
+    <p class="muted">By ${b.author} · ${b.category}</p>
+    <h5 class="price">₹${b.price}</h5>
+    <p>${b.description}</p>
+    <button class="btn btn-green" onclick="addToCart(${b.id});bootstrap.Modal.getInstance(document.getElementById('bookModal')).hide()">Add to Cart</button>
+  `;
+  bootstrap.Modal.getOrCreateInstance(document.getElementById("bookModal")).show();
+}
+
+function addToCart(id) {
+  const b = books.find(book => book.id === id);
+  cart.push(b);
+  document.getElementById("cartCount").textContent = cart.length;
+  renderCart();
+}
+
+function renderCart() {
+  document.getElementById("cartItems").innerHTML = cart.length
+    ? cart.map((b,i) => `
+      <div class="d-flex justify-content-between align-items-center border-bottom py-2 gap-2">
+        <span>${b.title} — ₹${b.price}</span>
+        <button class="small-btn" onclick="removeFromCart(${i})">Remove</button>
+      </div>`).join("")
+    : "Your cart is empty.";
+  document.getElementById("cartTotal").textContent =
+    "Total: ₹" + cart.reduce((sum,b) => sum + b.price, 0);
+}
+
+function removeFromCart(index) {
+  cart.splice(index,1);
+  document.getElementById("cartCount").textContent = cart.length;
+  renderCart();
+}
+
+function checkout() {
+  if (!cart.length) return alert("Your cart is empty!");
+  alert("Demo checkout successful! Total: ₹" +
+    cart.reduce((sum,b) => sum + b.price,0));
+  cart = [];
+  document.getElementById("cartCount").textContent = 0;
+  renderCart();
+}
+
+document.getElementById("searchBox").addEventListener("input",renderBooks);
+
+document.querySelectorAll(".category").forEach(el => {
+  el.addEventListener("click", () => {
+    document.querySelectorAll(".category").forEach(c => c.classList.remove("active"));
+    el.classList.add("active");
+    selectedCategory = el.dataset.category;
+    renderBooks();
+  });
+});
+
+document.getElementById("newsletterForm").addEventListener("submit",e => {
+  e.preventDefault();
+  document.getElementById("newsletterMessage").textContent =
+    "Thank you for subscribing! Backend integration is required to save your email.";
+  e.target.reset();
+});
+
+renderBooks();
+</script>
+</body>
+</html>
