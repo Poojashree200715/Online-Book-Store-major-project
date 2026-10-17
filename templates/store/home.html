@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero" id="home">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6">
+        <p class="text-uppercase fw-bold small" style="color:#c27e4a;letter-spacing:3px">
+          YOUR NEXT CHAPTER STARTS HERE
+        </p>
+        <h1>Find your next <span>favourite</span> book.</h1>
+        <p class="my-4">Explore wonderful stories, discover new ideas, and find books that inspire your world.</p>
+        <a href="#books" class="btn btn-green">Explore Books →</a>
+      </div>
+      <div class="col-lg-6">
+        <div class="hero-art">
+          <div class="book-cover cover-one">The Art<br>of Living</div>
+          <div class="book-cover cover-two">Stories<br>That Stay</div>
+          <div class="book-cover cover-three">Beyond<br>the Sky</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container py-5" id="categories">
+  <div class="mb-4">
+    <h2 class="section-title">Browse Categories</h2>
+    <p class="muted">Find something you'll love to read.</p>
+  </div>
+  <div class="row g-3">
+    <div class="col-6 col-md-3">
+      <a class="category {% if not selected_category %}active{% endif %}" href="{% url 'home' %}#books">📚 All Books</a>
+    </div>
+    {% for cat in categories %}
+    <div class="col-6 col-md-3">
+      <a class="category {% if selected_category == cat.slug %}active{% endif %}"
+         href="?category={{ cat.slug }}#books">{{ cat.icon }} {{ cat.name }}</a>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+{% if not selected_category and not query %}
+  {% if bestsellers %}
+  <section class="container pb-5" id="bestsellers">
+    <h2 class="section-title mb-4">Best Sellers</h2>
+    <div class="row g-4">
+      {% for book in bestsellers %}{% include "store/_book_card.html" %}{% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  {% if new_arrivals %}
+  <section class="container pb-5" id="new-arrivals">
+    <h2 class="section-title mb-4">New Arrivals</h2>
+    <div class="row g-4">
+      {% for book in new_arrivals %}{% include "store/_book_card.html" %}{% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  {% if audiobooks %}
+  <section class="container pb-5" id="audiobooks">
+    <h2 class="section-title mb-4">Audiobooks</h2>
+    <div class="row g-4">
+      {% for book in audiobooks %}{% include "store/_book_card.html" %}{% endfor %}
+    </div>
+  </section>
+  {% endif %}
+{% endif %}
+
+<section class="container pb-5" id="books">
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <div>
+      <h2 class="section-title mb-1">Discover Books</h2>
+      <p class="muted mb-0">Stories and knowledge for every reader.</p>
+    </div>
+    <form method="get" action="{% url 'home' %}#books" class="d-flex gap-2">
+      {% if selected_category %}<input type="hidden" name="category" value="{{ selected_category }}">{% endif %}
+      <input name="q" value="{{ query }}" class="form-control" style="max-width:240px"
+             placeholder="Search books or authors..." aria-label="Search books">
+      <button class="btn btn-green" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="row g-4">
+    {% for book in books %}
+      {% include "store/_book_card.html" %}
+    {% empty %}
+      <p class="text-center muted py-4">No books found. Try another search.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="container pb-5" id="cart">
+  <div class="p-4 rounded-3" style="background:#f8f6f0">
+    <h2 class="section-title">Your Cart</h2>
+    <div id="cartItems" class="my-3">Your cart is empty.</div>
+    <div class="fw-bold mb-3" id="cartTotal">Total: ₹0</div>
+    <button class="btn btn-green" id="checkoutBtn" type="button">Proceed to Checkout</button>
+    <p class="small muted mt-2 mb-0">Demo checkout only; no real payment is collected.</p>
+  </div>
+</section>
+
+<section class="container pb-5" id="newsletter">
+  <div class="newsletter text-center">
+    <h2 class="section-title">A little book love in your inbox.</h2>
+    <p class="my-3">Subscribe for reading recommendations and new arrivals.</p>
+    <form method="post" action="{% url 'subscribe' %}"
+          class="d-flex flex-column flex-sm-row gap-2 mx-auto" style="max-width:480px">
+      {% csrf_token %}
+      <input class="form-control" type="email" name="email" placeholder="Enter your email address" required>
+      <button class="btn btn-light text-dark fw-bold" type="submit">Subscribe</button>
+    </form>
+    {% for message in messages %}
+      <p class="small mt-3 mb-0">{{ message }}</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
