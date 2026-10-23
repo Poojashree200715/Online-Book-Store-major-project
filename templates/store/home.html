@@ -97,7 +97,7 @@
     <h2 class="section-title">Your Cart</h2>
     <div id="cartItems" class="my-3">Your cart is empty.</div>
     <div class="fw-bold mb-3" id="cartTotal">Total: ₹0</div>
-    <button class="btn btn-green" id="checkoutBtn" type="button">Proceed to Checkout</button>
+    <button class="btn btn-green" id="checkoutBtn" type="button" data-url="{% url 'checkout' %}">Proceed to Checkout</button>
     <p class="small muted mt-2 mb-0">Demo checkout only; no real payment is collected.</p>
   </div>
 </section>

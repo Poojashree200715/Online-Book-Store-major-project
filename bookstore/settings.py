@@ -3,6 +3,25 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+def _load_env_file(path):
+    """Read KEY=value lines from a local .env file into os.environ.
+
+    The .env file is listed in .gitignore, so secrets such as the Gemini API
+    key stay on your own computer and are never pushed to GitHub. Variables
+    already set in the real environment take priority.
+    """
+    if not path.exists():
+        return
+    for line in path.read_text(encoding="utf-8-sig").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, _, value = line.partition("=")
+        os.environ.setdefault(key.strip(), value.strip().strip('"').strip("'"))
+
+
+_load_env_file(BASE_DIR / ".env")
+
 # For development only. Use an environment variable in production.
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "dev-only-change-me")
 DEBUG = True
@@ -75,5 +94,7 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# Team 4: read the Gemini key from an environment variable, never hard-code it.
+# Team 4: the Gemini key comes from the .env file (or an environment variable).
+# Never write the key directly in this file.
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
+GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.5-flash")

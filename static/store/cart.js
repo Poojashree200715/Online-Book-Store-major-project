@@ -47,8 +47,9 @@
   if (checkout) {
     checkout.addEventListener("click", function () {
       if (!cart.length) { alert("Your cart is empty!"); return; }
-      // TODO (Team 4): send the cart to the Django checkout view instead of this alert.
-      alert("Checkout page coming soon. Total items: " + cart.length);
+      window.location.href = checkout.dataset.url;
+     
+      
     });
   }
 
