@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}Checkout | BookHaven{% endblock %}
+
+{% block content %}
+<section class="container py-5">
+  <h1 class="section-title mb-4">Checkout</h1>
+  <div class="row g-5">
+    <div class="col-lg-7">
+      <form method="post" action="{% url 'checkout' %}" id="checkoutForm">
+        {% csrf_token %}
+        {{ form.cart }}
+        {% if form.non_field_errors %}
+          <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+        {% endif %}
+
+        <div class="mb-3">
+          <label class="form-label" for="{{ form.name.id_for_label }}">Full name</label>
+          {{ form.name }}
+          {% for error in form.name.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="{{ form.phone.id_for_label }}">Phone</label>
+          {{ form.phone }}
+          {% for error in form.phone.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="{{ form.address.id_for_label }}">Delivery address</label>
+          {{ form.address }}
+          {% for error in form.address.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+        </div>
+
+        <button type="submit" class="btn btn-green" id="placeOrderBtn">Place Order</button>
+        <p class="small muted mt-2 mb-0">Demo checkout only; no real payment is collected.</p>
+      </form>
+    </div>
+
+    <div class="col-lg-5">
+      <div class="p-4 rounded-3" style="background:#f8f6f0">
+        <h2 class="h4">Order Summary</h2>
+        <div id="summaryItems" class="my-3">Loading...</div>
+        <div class="fw-bold" id="summaryTotal">Total: ₹0</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  var cart = [];
+  try { cart = JSON.parse(localStorage.getItem("bookhaven_cart")) || []; } catch (e) { cart = []; }
+
+  // Group repeated books into one row with a quantity.
+  var grouped = {};
+  cart.forEach(function (b) {
+    if (!grouped[b.id]) grouped[b.id] = { id: b.id, title: b.title, price: b.price, qty: 0 };
+    grouped[b.id].qty += 1;
+  });
+  var rows = Object.keys(grouped).map(function (k) { return grouped[k]; });
+
+  var box = document.getElementById("summaryItems");
+  var total = 0;
+  box.textContent = "";
+
+  if (!rows.length) {
+    box.textContent = "Your cart is empty. ";
+    var link = document.createElement("a");
+    link.href = "{% url 'home' %}#books";
+    link.textContent = "Browse books";
+    box.appendChild(link);
+    document.getElementById("placeOrderBtn").disabled = true;
+  }
+
+  rows.forEach(function (r) {
+    total += r.price * r.qty;
+    var line = document.createElement("div");
+    line.className = "d-flex justify-content-between border-bottom py-2 gap-2";
+    var left = document.createElement("span");
+    left.textContent = r.title + " × " + r.qty;
+    var right = document.createElement("span");
+    right.textContent = "₹" + (r.price * r.qty);
+    line.appendChild(left);
+    line.appendChild(right);
+    box.appendChild(line);
+  });
+
+  document.getElementById("summaryTotal").textContent = "Total: ₹" + total;
+
+  // Send only ids and quantities; the server looks up the real prices.
+  document.getElementById("id_cart").value =
+    JSON.stringify(rows.map(function (r) { return { id: r.id, qty: r.qty }; }));
+})();
+</script>
+{% endblock %}

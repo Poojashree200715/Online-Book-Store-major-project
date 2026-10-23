@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Order Confirmed | BookHaven{% endblock %}
+
+{% block content %}
+<section class="container py-5">
+  <div class="p-4 p-md-5 rounded-3" style="background:#f8f6f0">
+    <h1 class="section-title">Thank you, {{ order.customer_name }}!</h1>
+    <p class="muted">Your order <strong>#{{ order.pk }}</strong> has been placed.
+      This is a demo checkout, so no payment was taken.</p>
+
+    <div class="table-responsive my-4">
+      <table class="table align-middle mb-0">
+        <thead>
+          <tr><th>Book</th><th class="text-end">Price</th><th class="text-end">Qty</th><th class="text-end">Subtotal</th></tr>
+        </thead>
+        <tbody>
+          {% for item in order.items.all %}
+          <tr>
+            <td>{{ item.title }}</td>
+            <td class="text-end">₹{{ item.price|floatformat:"0u" }}</td>
+            <td class="text-end">{{ item.quantity }}</td>
+            <td class="text-end">₹{{ item.line_total|floatformat:"0u" }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+        <tfoot>
+          <tr><th colspan="3" class="text-end">Total</th><th class="text-end">₹{{ order.total|floatformat:"0u" }}</th></tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <h2 class="h5">Delivery details</h2>
+    <p class="mb-1">{{ order.customer_name }} · {{ order.phone }}</p>
+    <p>{{ order.address|linebreaksbr }}</p>
+
+    <a href="{% url 'home' %}" class="btn btn-green">Continue Shopping</a>
+  </div>
+</section>
+
+<script>
+  // The order is placed, so empty the browser cart.
+  try { localStorage.removeItem("bookhaven_cart"); } catch (e) {}
+</script>
+{% endblock %}

@@ -49,3 +49,37 @@ class Subscriber(models.Model):
 
     def __str__(self):
         return self.email
+
+
+# ---------------------------------------------------------------- Team 4 ---
+
+class Order(models.Model):
+    """A dummy order created at checkout (no real payment is taken)."""
+    customer_name = models.CharField(max_length=100)
+    phone = models.CharField(max_length=15)
+    address = models.TextField()
+    total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"Order #{self.pk} - {self.customer_name}"
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
+    book = models.ForeignKey(Book, on_delete=models.PROTECT)
+    # Title and price are copied at purchase time, so later edits to the book
+    # do not change past orders.
+    title = models.CharField(max_length=200)
+    price = models.DecimalField(max_digits=8, decimal_places=2)
+    quantity = models.PositiveIntegerField(default=1)
+
+    @property
+    def line_total(self):
+        return self.price * self.quantity
+
+    def __str__(self):
+        return f"{self.quantity} x {self.title}"
